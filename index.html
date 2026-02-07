@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For Kajuuu ✨</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a0000 0%, #330000 50%, #660000 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Page transitions */
+        .page {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 1.5s ease-in-out;
+            pointer-events: none;
+        }
+
+        .page.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+        
+        .page.fade-out {
+            opacity: 0;
+        }
+
+        .container {
+            text-align: center;
+            z-index: 10;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #ffcccc;
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.5);
+            animation: fadeIn 1s ease-in;
+        }
+
+        .message {
+            color: #ffb3b3;
+            font-size: 1.8rem;
+            margin-bottom: 50px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.4);
+            animation: fadeIn 1.5s ease-in;
+        }
+
+        .rose-container {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .rose-container:hover {
+            transform: scale(1.1);
+        }
+
+        .rose {
+            font-size: 200px;
+            animation: float 3s ease-in-out infinite;
+            filter: drop-shadow(0 15px 30px rgba(255, 0, 0, 0.4));
+            transition: transform 0.8s ease-out;
+        }
+
+        .rose.expand {
+            transform: scale(3);
+            opacity: 0;
+        }
+
+        .petal {
+            position: absolute;
+            font-size: 60px;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .instruction {
+            color: #ffcccc;
+            font-size: 1.4rem;
+            margin-top: 40px;
+            opacity: 0.9;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .footer {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #ffb3b3;
+            font-size: 1rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+            animation: fadeIn 2s ease-in;
+        }
+
+        /* Floating hearts - increased frequency */
+        .heart {
+            position: absolute;
+            font-size: 30px;
+            animation: rise 4s linear infinite;
+            opacity: 0;
+            z-index: 1;
+        }
+
+        /* Heart-shaped message box */
+        .rose-message {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90vw;
+            max-width: 400px;
+            text-align: center;
+            z-index: 100;
+        }
+        
+        .heart-container {
+            position: relative;
+            width: 100%;
+            padding: 80px 40px 40px 40px;
+            background: linear-gradient(135deg, #ffe6e6 0%, #ffcccc 50%, #ffb3b3 100%);
+            border-radius: 0 0 200px 200px;
+            box-shadow: 0 20px 60px rgba(255, 0, 0, 0.5);
+            animation: heartBeat 0.8s ease-out;
+        }
+        
+        .heart-container::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            height: 100px;
+            background: linear-gradient(135deg, #ffe6e6 0%, #ffcccc 50%, #ffb3b3 100%);
+            border-radius: 100px 100px 0 0;
+        }
+        
+        .heart-container::after {
+            content: "";
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 60px;
+            background: radial-gradient(circle, #ff6b6b 0%, #ff1493 100%);
+            border-radius: 50%;
+            box-shadow: 0 5px 20px rgba(255, 20, 147, 0.6);
+        }
+
+        .rose-message.show {
+            display: block;
+        }
+
+        .rose-message h2 {
+            color: #cc0000;
+            font-size: 2rem;
+            margin-bottom: 25px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            position: relative;
+            z-index: 1;
+            font-weight: bold;
+        }
+
+        .rose-message p {
+            color: #660000;
+            font-size: 1.15rem;
+            line-height: 1.8;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+            font-weight: 500;
+        }
+
+        .action-btn {
+            background: linear-gradient(135deg, #cc0000 0%, #ff0000 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(255, 0, 0, 0.3);
+            position: relative;
+            z-index: 1;
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        .action-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(255, 0, 0, 0.5);
+        }
+
+        /* Photo page */
+        .photo-container {
+            text-align: center;
+            max-width: 90%;
+        }
+
+        .photo-container img {
+            max-width: 600px;
+            max-height: 70vh;
+            width: auto;
+            height: auto;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(255, 0, 0, 0.4);
+            margin-bottom: 30px;
+            animation: photoReveal 1s ease-out;
+        }
+
+        .photo-message {
+            background: rgba(255, 230, 230, 0.95);
+            padding: 30px;
+            border-radius: 20px;
+            max-width: 500px;
+            margin: 0 auto 30px;
+            border: 2px solid #ff6b6b;
+        }
+
+        .photo-message p {
+            color: #660000;
+            font-size: 1.3rem;
+            line-height: 1.8;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 0.9;
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.05);
+            }
+        }
+
+        @keyframes rise {
+            0% {
+                bottom: -50px;
+                opacity: 0;
+            }
+            50% {
+                opacity: 0.9;
+            }
+            100% {
+                bottom: 110vh;
+                opacity: 0;
+            }
+        }
+
+        @keyframes heartBeat {
+            0% {
+                transform: scale(0.3);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes petalFly {
+            0% {
+                transform: translate(0, 0) rotate(0deg) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--tx), var(--ty)) rotate(var(--rotate)) scale(0.5);
+                opacity: 0;
+            }
+        }
+
+        @keyframes photoReveal {
+            0% {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+            .message {
+                font-size: 1.3rem;
+            }
+            .rose {
+                font-size: 140px;
+            }
+            .rose-message {
+                max-width: 350px;
+            }
+            .heart-container {
+                padding: 70px 30px 35px 30px;
+            }
+            .rose-message h2 {
+                font-size: 1.7rem;
+                margin-bottom: 20px;
+            }
+            .rose-message p {
+                font-size: 1rem;
+                line-height: 1.7;
+                margin-bottom: 18px;
+            }
+            .action-btn {
+                padding: 12px 30px;
+                font-size: 1rem;
+            }
+            .photo-container img {
+                max-width: 90%;
+                max-height: 60vh;
+            }
+            .photo-message {
+                padding: 25px;
+                margin: 0 20px 25px;
+            }
+            .photo-message p {
+                font-size: 1.1rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+            .message {
+                font-size: 1.1rem;
+            }
+            .rose {
+                font-size: 120px;
+            }
+            .rose-message {
+                max-width: 320px;
+            }
+            .heart-container {
+                padding: 60px 25px 30px 25px;
+            }
+            .rose-message h2 {
+                font-size: 1.5rem;
+            }
+            .rose-message p {
+                font-size: 0.95rem;
+            }
+            .heart-container::before {
+                height: 80px;
+            }
+            .heart-container::after {
+                width: 50px;
+                height: 50px;
+                top: -25px;
+            }
+            .footer p {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Page 1: Initial Rose -->
+    <div class="page active" id="page1">
+        <div class="container">
+            <h1>Hey Kajuuu ✨</h1>
+            <p class="message">a small surprise for you.. 😉</p>
+            
+            <div class="rose-container" onclick="expandRose()">
+                <div class="rose" id="mainRose">🌹</div>
+            </div>
+            
+            <p class="instruction">Touch the rose</p>
+        </div>
+
+        <div class="footer">
+            <p>By one and only, and yours and only yours, Tarang 😎✨</p>
+        </div>
+    </div>
+
+    <!-- Page 2: Message Box -->
+    <div class="page" id="page2">
+        <div class="rose-message show">
+            <div class="heart-container">
+                <h2>Happy Rose Day! 💕</h2>
+                <p>You are the most beautiful rose in my garden of life. Thank you for bringing color, fragrance, and joy that you bring in the every moment we share! </p>
+                <p>I'm eternally grateful for everything, I might lack words sometimes, but just know, I love you so much!</p>
+                <button class="action-btn" onclick="showPhoto()">Cheers! 🥂✨</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Page 3: Photo Reveal -->
+    <div class="page" id="page3">
+        <div class="photo-container">
+            <img src="us.jpeg" alt="Our Photo" id="photoImage">
+            
+            <div class="photo-message">
+                <p>I told you not to make assumptions 😉, and that, something is planned.. My Rose!! ✨🙈</p>
+            </div>
+            
+            <button class="action-btn" onclick="backToStart()">Bye Bye! 👋</button>
+        </div>
+    </div>
+
+    <script>
+        // Create floating hearts - more frequent
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * 100 + '%';
+            heart.style.animationDuration = (Math.random() * 3 + 2) + 's';
+            heart.style.animationDelay = Math.random() * 1 + 's';
+            document.body.appendChild(heart);
+
+            setTimeout(() => {
+                heart.remove();
+            }, 6000);
+        }
+
+        // Generate hearts more frequently
+        setInterval(createHeart, 300);
+
+        // Expand rose with petals flying
+        function expandRose() {
+            const rose = document.getElementById('mainRose');
+            const page1 = document.getElementById('page1');
+            
+            rose.classList.add('expand');
+            
+            // Create flying petals
+            createPetals();
+            
+            // Add fade-out to page 1
+            setTimeout(() => {
+                page1.classList.add('fade-out');
+            }, 500);
+            
+            // Transition to page 2 after animation
+            setTimeout(() => {
+                page1.classList.remove('active', 'fade-out');
+                document.getElementById('page2').classList.add('active');
+            }, 1500);
+        }
+
+        // Create flying petals effect - more petals and wider spread
+        function createPetals() {
+            const roseContainer = document.querySelector('.rose-container');
+            const petalEmojis = ['🌸', '🌺', '🌹', '💐', '🏵️', '🌷'];
+            
+            for (let i = 0; i < 24; i++) {
+                const petal = document.createElement('div');
+                petal.className = 'petal';
+                petal.innerHTML = petalEmojis[Math.floor(Math.random() * petalEmojis.length)];
+                
+                const angle = (Math.PI * 2 * i) / 24;
+                const distance = 250 + Math.random() * 200; // Wider spread
+                const tx = Math.cos(angle) * distance;
+                const ty = Math.sin(angle) * distance;
+                const rotate = Math.random() * 1080 - 540; // More rotation
+                
+                petal.style.setProperty('--tx', tx + 'px');
+                petal.style.setProperty('--ty', ty + 'px');
+                petal.style.setProperty('--rotate', rotate + 'deg');
+                
+                roseContainer.appendChild(petal);
+                
+                setTimeout(() => {
+                    petal.style.animation = 'petalFly 1.5s ease-out forwards';
+                }, 50);
+                
+                setTimeout(() => {
+                    petal.remove();
+                }, 1600);
+            }
+        }
+
+        // Show photo page
+        function showPhoto() {
+            document.getElementById('page2').classList.remove('active');
+            document.getElementById('page3').classList.add('active');
+        }
+
+        // Back to start
+        function backToStart() {
+            document.getElementById('page3').classList.remove('active');
+            document.getElementById('page1').classList.add('active');
+            
+            // Reset rose
+            const rose = document.getElementById('mainRose');
+            rose.classList.remove('expand');
+        }
+    </script>
+</body>
+</html>
